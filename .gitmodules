@@ -1,0 +1,3 @@
+[submodule "vendor/rangka/quickbooks"]
+	path = vendor/rangka/quickbooks
+	url = https://github.com/rangka/quickbooks.git
