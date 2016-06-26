@@ -25,8 +25,8 @@ function get($key, $default = null, $source = 'GET') {
 }
 
 \Rangka\Quickbooks\Client::configure([
-    'consumer_key'       => 'qyprdcpC6WdMbH6QZ39qyqtbuI4f1K',
-    'consumer_secret'    => 'STJhEBLO5qu2XDQT9CE5uLdTPT1VgONVxQlrXwdX',
+    'consumer_key'       => '',
+    'consumer_secret'    => '',
     'sandbox'            => 'sandbox',
     'oauth_token'        => get('oauth_token', null, 'SESSION'),
     'oauth_token_secret' => get('oauth_token_secret', null, 'SESSION'),
