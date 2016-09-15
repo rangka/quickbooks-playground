@@ -134,7 +134,37 @@ include('include.php');
                                 This action has not been implemented yet.
                             </div>
                             <div v-else>
-                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <form action="">
+                                            <div class="form-group">
+                                                <label for="id">Max Results</label>
+                                                <input type="text" class="form-control" v-model="data.max_results">
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="button" class="btn btn-info" @click="query()">Submit</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="panel result-panel">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title">Response <span class="pull-right"><a href="javascript:void(0);">API Docs</a> | <a href="javascript:void(0);">QB Docs</a></span></h3>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div v-if="loading">
+                                                    Fetching data, please wait..
+                                                </div>
+                                                <div v-else>
+                                                    <div v-if="response" class="response">{{ response }}</div>
+                                                    <div v-else>
+                                                        Enter an ID and press <b>Submit</b>.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div v-if="activeTab == 'batchRequest'">
@@ -165,7 +195,8 @@ include('include.php');
                     activeTab: null,
                     entity: null,
                     data: {
-                        id: null
+                        id: null,
+                        max_results: 10
                     },
                     response: null,
                     entities: {
@@ -174,7 +205,7 @@ include('include.php');
                                 create: true, 
                                 read  : false, 
                                 update: false, 
-                                query : false
+                                query : true
                             }
                         },
                         Attachable: {
@@ -183,7 +214,7 @@ include('include.php');
                                 read: false,
                                 update: false,
                                 delete: false,
-                                query: false
+                                query: true
                             }
                         },
                         Batch: {
@@ -197,7 +228,7 @@ include('include.php');
                                 read: false,
                                 update: false,
                                 delete: false,
-                                query: false
+                                query: true
                             }
                         },
                         BillPayment: {
@@ -206,12 +237,12 @@ include('include.php');
                                 read: false,
                                 update: false,
                                 delete: false,
-                                query: false
+                                query: true
                             }
                         },
                         Budget: {
                             actions: {
-                                query: false
+                                query: true
                             }
                         },
                         ChangeDataCapture: {
@@ -224,13 +255,13 @@ include('include.php');
                                 create: true,
                                 read: false,
                                 update: false,
-                                query: false
+                                query: true
                             }
                         },
                         CompanyInfo: {
                             actions: {
                                 read: false,
-                                query: false
+                                query: true
                             }
                         },
                         CreditMemo: {
@@ -239,7 +270,7 @@ include('include.php');
                                 read: false,
                                 update: false,
                                 delete: false,
-                                query: false
+                                query: true
                             }
                         },
                         Customer: {
@@ -255,7 +286,7 @@ include('include.php');
                                 create: false,
                                 read: false,
                                 update: false,
-                                query: false
+                                query: true
                             }
                         },
                         Deposit: {
@@ -264,7 +295,7 @@ include('include.php');
                                 read: false,
                                 update: false,
                                 delete: false,
-                                query: false
+                                query: true
                             }
                         },
                         Employee: {
@@ -272,7 +303,7 @@ include('include.php');
                                 create: false,
                                 read: false,
                                 update: false,
-                                query: false
+                                query: true
                             }
                         },
                         Estimate: {
@@ -281,7 +312,7 @@ include('include.php');
                                 read: false,
                                 update: false,
                                 delete: false,
-                                query: false
+                                query: true
                             }
                         },
                         Invoice: {
@@ -290,7 +321,7 @@ include('include.php');
                                 read: false,
                                 update: false,
                                 delete: false,
-                                query: false
+                                query: true
                             }
                         },
                         Item: {
@@ -298,7 +329,7 @@ include('include.php');
                                 create: false,
                                 read: false,
                                 update: false,
-                                query: false
+                                query: true
                             }
                         },
                         JournalEntry: {
@@ -307,7 +338,7 @@ include('include.php');
                                 read: false,
                                 update: false,
                                 delete: false,
-                                query: false
+                                query: true
                             }
                         },
                         Payment: {
@@ -316,7 +347,7 @@ include('include.php');
                                 read: false,
                                 update: false,
                                 delete: false,
-                                query: false
+                                query: true
                             }
                         },
                         PaymentMethod: {
@@ -324,14 +355,14 @@ include('include.php');
                                 create: false,
                                 read: false,
                                 update: false,
-                                query: false
+                                query: true
                             }
                         },
                         Preferences: {
                             actions: {
                                 read: false,
                                 update: false,
-                                query: false
+                                query: true
                             }
                         },
                         Purchase: {
@@ -340,7 +371,7 @@ include('include.php');
                                 read: false,
                                 update: false,
                                 delete: false,
-                                query: false
+                                query: true
                             }
                         },
                         PurchaseOrder: {
@@ -349,7 +380,7 @@ include('include.php');
                                 read: false,
                                 update: false,
                                 delete: false,
-                                query: false
+                                query: true
                             }
                         },
                         RefundReceipt: {
@@ -358,7 +389,7 @@ include('include.php');
                                 read: false,
                                 update: false,
                                 delete: false,
-                                query: false
+                                query: true
                             }
                         },
                         Reports: {
@@ -372,26 +403,26 @@ include('include.php');
                                 read: false,
                                 update: false,
                                 delete: false,
-                                query: false
+                                query: true
                             }
                         },
                         TaxAgency: {
                             actions: {
                                 create: false,
                                 read: false,
-                                query: false
+                                query: true
                             }
                         },
                         TaxCode: {
                             actions: {
                                 read: false,
-                                query: false
+                                query: true
                             }
                         },
                         TaxRate: {
                             actions: {
                                 read: false,
-                                query: false
+                                query: true
                             }
                         },
                         TaxService: {
@@ -404,7 +435,7 @@ include('include.php');
                                 create: false,
                                 read: false,
                                 update: false,
-                                query: false
+                                query: true
                             }
                         },
                         TimeActivity: {
@@ -413,7 +444,7 @@ include('include.php');
                                 read: false,
                                 update: false,
                                 delete: false,
-                                query: false
+                                query: true
                             }
                         },
                         Transfer: {
@@ -422,7 +453,7 @@ include('include.php');
                                 read: false,
                                 update: false,
                                 delete: false,
-                                query: false
+                                query: true
                             }
                         },
                         Vendor: {
@@ -430,7 +461,7 @@ include('include.php');
                                 create: false,
                                 read: false,
                                 update: false,
-                                query: false
+                                query: true
                             }
                         },
                         VendorCredit: {
@@ -439,7 +470,7 @@ include('include.php');
                                 read: false,
                                 update: false,
                                 delete: false,
-                                query: false
+                                query: true
                             }
                         },
                     }
@@ -467,6 +498,17 @@ include('include.php');
                     read: function() {
                         this.loading = true;
                         this.$http.post('read.php', {id: this.data.id, entity: this.entity}, {emulateJSON: true})
+                            .then(function(response) {
+                                this.response = JSON.stringify(response.json(), null, 2);
+                                this.loading = false;
+                            }, function() {
+                                this.response = 'Failed to fetch data.';
+                                this.loading = false;
+                            });
+                    },
+                    query: function() {
+                        this.loading = true;
+                        this.$http.post('query.php', {max_results: this.data.max_results, entity: this.entity}, {emulateJSON: true})
                             .then(function(response) {
                                 this.response = JSON.stringify(response.json(), null, 2);
                                 this.loading = false;
