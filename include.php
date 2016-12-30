@@ -1,10 +1,14 @@
 <?php
 session_start();
 
+if (!is_writable(session_save_path())) {
+    die('Session path "'.session_save_path().'" is not writable for PHP!'); 
+}
+
 include('vendor/autoload.php');
 
-define('REDIRECT_URL', 'http://local.app/rangka/quickbooks-dev/redirect.php');
-define('CONNECT_URL', 'http://local.app/rangka/quickbooks-dev/connect.php');
+define('REDIRECT_URL', 'http://local7.dev/rangka/quickbooks-dev/redirect.php');
+define('CONNECT_URL', 'http://local7.dev/rangka/quickbooks-dev/connect.php');
 
 function get($key, $default = null, $source = 'GET') {
     global $_SESSION;
