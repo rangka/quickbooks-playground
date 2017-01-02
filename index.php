@@ -126,7 +126,37 @@ include('include.php');
                                 This action has not been implemented yet.
                             </div>
                             <div v-else>
-                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <form action="">
+                                            <div class="form-group">
+                                                <label for="id">ID</label>
+                                                <input type="text" class="form-control" v-model="data.id">
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="button" class="btn btn-info" @click="delete()">Submit</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="panel result-panel">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title">Response <span class="pull-right"><a href="javascript:void(0);">API Docs</a> | <a href="javascript:void(0);">QB Docs</a></span></h3>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div v-if="loading">
+                                                    Deleting data, please wait..
+                                                </div>
+                                                <div v-else>
+                                                    <div v-if="response" class="response">{{ response }}</div>
+                                                    <div v-else>
+                                                        Enter an ID and press <b>Submit</b>.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div v-if="activeTab == 'query'">
@@ -213,7 +243,7 @@ include('include.php');
                                 create: true,
                                 read: false,
                                 update: false,
-                                delete: false,
+                                delete: true,
                                 query: true
                             }
                         },
@@ -227,7 +257,7 @@ include('include.php');
                                 create: true,
                                 read: false,
                                 update: false,
-                                delete: false,
+                                delete: true,
                                 query: true
                             }
                         },
@@ -236,7 +266,7 @@ include('include.php');
                                 create: true,
                                 read: false,
                                 update: false,
-                                delete: false,
+                                delete: true,
                                 query: true
                             }
                         },
@@ -269,7 +299,7 @@ include('include.php');
                                 create: true,
                                 read: false,
                                 update: false,
-                                delete: false,
+                                delete: true,
                                 query: true
                             }
                         },
@@ -294,7 +324,7 @@ include('include.php');
                                 create: false,
                                 read: false,
                                 update: false,
-                                delete: false,
+                                delete: true,
                                 query: true
                             }
                         },
@@ -311,7 +341,7 @@ include('include.php');
                                 create: false,
                                 read: false,
                                 update: false,
-                                delete: false,
+                                delete: true,
                                 query: true
                             }
                         },
@@ -320,7 +350,7 @@ include('include.php');
                                 create: false,
                                 read: false,
                                 update: false,
-                                delete: false,
+                                delete: true,
                                 query: true
                             }
                         },
@@ -337,7 +367,7 @@ include('include.php');
                                 create: false,
                                 read: false,
                                 update: false,
-                                delete: false,
+                                delete: true,
                                 query: true
                             }
                         },
@@ -346,7 +376,7 @@ include('include.php');
                                 create: false,
                                 read: false,
                                 update: false,
-                                delete: false,
+                                delete: true,
                                 query: true
                             }
                         },
@@ -370,7 +400,7 @@ include('include.php');
                                 create: false,
                                 read: false,
                                 update: false,
-                                delete: false,
+                                delete: true,
                                 query: true
                             }
                         },
@@ -379,7 +409,7 @@ include('include.php');
                                 create: false,
                                 read: false,
                                 update: false,
-                                delete: false,
+                                delete: true,
                                 query: true
                             }
                         },
@@ -388,7 +418,7 @@ include('include.php');
                                 create: false,
                                 read: false,
                                 update: false,
-                                delete: false,
+                                delete: true,
                                 query: true
                             }
                         },
@@ -402,7 +432,7 @@ include('include.php');
                                 create: false,
                                 read: false,
                                 update: false,
-                                delete: false,
+                                delete: true,
                                 query: true
                             }
                         },
@@ -443,7 +473,7 @@ include('include.php');
                                 create: false,
                                 read: false,
                                 update: false,
-                                delete: false,
+                                delete: true,
                                 query: true
                             }
                         },
@@ -452,7 +482,7 @@ include('include.php');
                                 create: false,
                                 read: false,
                                 update: false,
-                                delete: false,
+                                delete: true,
                                 query: true
                             }
                         },
@@ -469,7 +499,7 @@ include('include.php');
                                 create: false,
                                 read: false,
                                 update: false,
-                                delete: false,
+                                delete: true,
                                 query: true
                             }
                         },
@@ -503,6 +533,17 @@ include('include.php');
                                 this.loading = false;
                             }, function() {
                                 this.response = 'Failed to fetch data.';
+                                this.loading = false;
+                            });
+                    },
+                    delete: function() {
+                        this.loading = true;
+                        this.$http.post('delete.php', {id: this.data.id, entity: this.entity}, {emulateJSON: true})
+                            .then(function(response) {
+                                this.response = JSON.stringify(response.json(), null, 2);
+                                this.loading = false;
+                            }, function() {
+                                this.response = 'Failed to delete.';
                                 this.loading = false;
                             });
                     },
