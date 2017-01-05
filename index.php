@@ -77,7 +77,49 @@ include('include.php');
                                 This action has not been implemented yet.
                             </div>
                             <div v-else>
-                                
+                                <div class="col-md-6">
+                                    <div class="form-group" v-for="field in getEntityAction()">
+                                        <label for="">
+                                            {{ field.name }}
+                                            <span class="required" v-if="field.required">*</span>
+                                        </label>
+
+                                        <div v-if="field.type == 'text'">
+                                            <input type="text" class="form-control" v-model="item[field.key]">
+                                        </div>
+
+                                        <div v-if="field.type == 'select'">
+                                            <select name="" id="" class="form-control" v-model="item[field.key]">
+                                                <option value="{{ option.value }}" v-for="option in field.options">{{ option.name }}</option>
+                                            </select>
+                                        </div>
+
+                                        <div v-if="field.type == 'checkbox'">
+                                            <input type="checkbox" value="{{ field.value }}" v-model="item[field.key]"> {{ field.description }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-info" @click="create()">Submit</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="panel result-panel">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Response <span class="pull-right"><a href="javascript:void(0);">API Docs</a> | <a href="javascript:void(0);">QB Docs</a></span></h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div v-if="loading">
+                                                Fetching data, please wait..
+                                            </div>
+                                            <div v-else>
+                                                <div v-if="response" class="response">{{ response }}</div>
+                                                <div v-else>
+                                                    Fill up the form and press <b>Submit</b>. Fields marked with <span class="required">*</span> is required.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div v-if="activeTab == 'read'">
@@ -228,6 +270,7 @@ include('include.php');
                         id: null,
                         max_results: 10
                     },
+                    item: {},
                     response: null,
                     entities: {
                         Account: {
@@ -382,7 +425,29 @@ include('include.php');
                         },
                         PaymentMethod: {
                             actions: {
-                                create: false,
+                                create: [
+                                    {
+                                        name: "Name",
+                                        key: 'Name',
+                                        type: 'text',
+                                        required: true
+                                    },
+                                    {
+                                        name: "Type",
+                                        key: 'Type',
+                                        type: 'select',
+                                        options: [
+                                            {
+                                                name: 'Credit Card',
+                                                value: 'CREDIT_CARD'
+                                            },
+                                            {
+                                                name: 'Non-Credit Card',
+                                                value: 'NON_CREDIT_CARD'
+                                            }
+                                        ]
+                                    }
+                                ],
                                 read: false,
                                 update: false,
                                 query: true
@@ -555,6 +620,17 @@ include('include.php');
                                 this.loading = false;
                             }, function() {
                                 this.response = 'Failed to fetch data.';
+                                this.loading = false;
+                            });
+                    },
+                    create: function() {
+                        this.loading = true;
+                        this.$http.post('create.php', {fields: this.item, entity: this.entity}, {emulateJSON: true})
+                            .then(function(response) {
+                                this.response = JSON.stringify(response.json(), null, 2);
+                                this.loading = false;
+                            }, function() {
+                                this.response = 'Failed to create data.';
                                 this.loading = false;
                             });
                     }
