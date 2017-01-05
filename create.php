@@ -13,14 +13,28 @@ try {
     $builder = $service->getBuilder();
 
     foreach ($fields as $field=>$value) {
+        $method = 'set'.$field;
+        $exploded = explode('.', $field);
+
+        if (count($exploded) > 1) {
+            $method   = 'set'.$exploded[0];
+            
+            unset($exploded[0]);
+
+            $reversed = array_reverse($exploded);
+            foreach ($reversed as $now) {
+                $value = [$now => $value];
+            }
+        }
+
         if ($value === 'true') {
-            $builder->{'set'.$field}(true);
+            $builder->{$method}(true);
         }
         else if ($value === 'false') {
-            $builder->{'set'.$field}(false);
+            $builder->{$method}(false);
         }
         else {
-            $builder->{'set'.$field}($value);
+            $builder->{$method}($value);
         }
     }
 

@@ -275,7 +275,108 @@ include('include.php');
                     entities: {
                         Account: {
                             actions: {
-                                create: true, 
+                                create: [
+                                    {
+                                        name: 'Name',
+                                        key: 'Name',
+                                        type: 'text',
+                                        required: true
+                                    },
+                                    {
+                                        name: 'Description',
+                                        key: 'Description',
+                                        type: 'text'
+                                    },
+                                    {
+                                        name: 'Classification',
+                                        key: 'Classification',
+                                        type: 'select',
+                                        options: [
+                                            {
+                                                name: 'Asset',
+                                                value: 'Asset'
+                                            },
+                                            {
+                                                name: 'Equity',
+                                                value: 'Equity'
+                                            },
+                                            {
+                                                name: 'Expense',
+                                                value: 'Expense'
+                                            },
+                                            {
+                                                name: 'Liability',
+                                                value: 'Liability'
+                                            },
+                                            {
+                                                name: 'Revenue',
+                                                value: 'Revenue'
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        name: 'Account Type',
+                                        key: 'AccountType',
+                                        type: 'select',
+                                        options: [
+                                            {
+                                                name: 'Asset > Bank',
+                                                value: 'Bank'
+                                            },
+                                            {
+                                                name: 'Asset > Other Current Asset',
+                                                value: 'Other Current Asset'
+                                            },
+                                            {
+                                                name: 'Equity > Equity',
+                                                value: 'Equity'
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        name: 'Account Sub-Type',
+                                        key: 'AccountSubType',
+                                        type: 'select',
+                                        options: [
+                                            {
+                                                name: 'Asset > Bank > CashOnHand',
+                                                value: 'CashOnHand'
+                                            },
+                                            {
+                                                name: 'Asset > Other Current Asset > DevelopmentCosts',
+                                                value: 'DevelopmentCosts'
+                                            },
+                                            {
+                                                name: 'Equity > Equity > OpeningBalanceEquity',
+                                                value: 'OpeningBalanceEquity'
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        name: 'Account Number',
+                                        key: 'AcctNum',
+                                        type: 'text'
+                                    },
+                                    {
+                                        name: 'Currency',
+                                        key: 'CurrencyRef.value',
+                                        type: 'select',
+                                        options: [
+                                            {
+                                                name: 'EUR',
+                                                key: 'EUR'
+                                            },
+                                            {
+                                                name: 'USD',
+                                                key: 'USD'
+                                            },
+                                            {
+                                                name: 'MYR',
+                                                key: 'MYR'
+                                            }
+                                        ]
+                                    }
+                                ], 
                                 read  : false, 
                                 update: false, 
                                 query : true
