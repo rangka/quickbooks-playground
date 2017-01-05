@@ -85,7 +85,11 @@ include('include.php');
                                         </label>
 
                                         <div v-if="field.type == 'text'">
-                                            <input type="text" class="form-control" v-model="item[field.key]">
+                                            <input type="text" class="form-control" value="{{ field.default }}" v-model="item[field.key]">
+                                        </div>
+
+                                        <div v-if="field.type == 'textarea'">
+                                            <textarea v-model="item[field.key]" class="form-control"></textarea>
                                         </div>
 
                                         <div v-if="field.type == 'select'">
@@ -373,6 +377,10 @@ include('include.php');
                                             {
                                                 name: 'MYR',
                                                 key: 'MYR'
+                                            },
+                                            {
+                                                name: 'AUD',
+                                                key: 'AUD'
                                             }
                                         ]
                                     }
@@ -398,8 +406,84 @@ include('include.php');
                         },
                         Bill: {
                             actions: {
-                                create: true,
-                                read: false,
+                                create: [
+                                    {
+                                        name: 'Document Number',
+                                        key: 'DocNumber',
+                                        type: 'text'
+                                    },
+                                    {
+                                        name: 'Transaction Date',
+                                        key: 'TxnDate',
+                                        type: 'text',
+                                        default: '<?php echo date('Y-m-d') ?>'
+                                    },
+                                    {
+                                        name: 'Due Date',
+                                        key: 'DueDate',
+                                        type: 'text',
+                                        default: '<?php echo date('Y-m-d', time() + (60*60*24*7)) ?>'
+                                    },
+                                    {
+                                        name: 'Currency',
+                                        key: 'CurrencyRef.value',
+                                        type: 'select',
+                                        options: [
+                                            {
+                                                name: 'EUR',
+                                                key: 'EUR'
+                                            },
+                                            {
+                                                name: 'USD',
+                                                key: 'USD'
+                                            },
+                                            {
+                                                name: 'MYR',
+                                                key: 'MYR'
+                                            },
+                                            {
+                                                name: 'AUD',
+                                                key: 'AUD'
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        name: 'Private Note',
+                                        key: 'PrivateNote',
+                                        type: 'textarea'
+                                    },
+                                    {
+                                        name: 'Billed Items',
+                                        key: 'Line',
+                                        type: 'select',
+                                        options: [
+                                            {
+                                                name: 'Item 20 - $30',
+                                                value: '{"Data": [{"Amount": 30.25, "DetailType": "ItemBasedExpenseLineDetail", "ItemBasedExpenseLineDetail": {"ItemRef": {"value": "3"}}}]}'
+                                            },
+                                            {
+                                                name: 'Item 21 - $50',
+                                                value: '{"Data": [{"Amount": 50.10, "DetailType": "ItemBasedExpenseLineDetail", "ItemBasedExpenseLineDetail": {"ItemRef": {"value": "4"}}}]}'
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        name: 'Vendor',
+                                        key: 'VendorRef.value',
+                                        type: 'select',
+                                        options: [
+                                            {
+                                                name: 'Andrew Haberbosch',
+                                                value: 24
+                                            },
+                                            {
+                                                name: 'Bank of AnyCity',
+                                                value: 25
+                                            }
+                                        ]
+                                    }
+                                ],
+                                read: true,
                                 update: false,
                                 delete: true,
                                 query: true

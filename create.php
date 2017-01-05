@@ -18,13 +18,18 @@ try {
 
         if (count($exploded) > 1) {
             $method   = 'set'.$exploded[0];
-            
+
             unset($exploded[0]);
 
             $reversed = array_reverse($exploded);
             foreach ($reversed as $now) {
                 $value = [$now => $value];
             }
+        }
+
+        if (substr($value, 0, 1) == '{') {
+            $value = json_decode($value, true);
+            $value = $value['Data'];
         }
 
         if ($value === 'true') {
