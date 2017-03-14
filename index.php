@@ -243,6 +243,48 @@ include('include.php');
                                 </div>
                             </div>
                         </div>
+                        <div v-if="activeTab == 'send'">
+                            <div v-if="!getEntityAction()">
+                                This action has not been implemented yet.
+                            </div>
+                            <div v-else>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <form action="">
+                                            <div class="form-group">
+                                                <label for="id">ID</label>
+                                                <input type="text" class="form-control" v-model="data.id">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="id">Email</label>
+                                                <input type="text" class="form-control" v-model="data.email">
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="button" class="btn btn-info" @click="send()">Submit</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="panel result-panel">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title">Response <span class="pull-right"><a href="javascript:void(0);">API Docs</a> | <a href="javascript:void(0);">QB Docs</a></span></h3>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div v-if="loading">
+                                                    Fetching data, please wait..
+                                                </div>
+                                                <div v-else>
+                                                    <div v-if="response" class="response">{{ response }}</div>
+                                                    <div v-else>
+                                                        Enter an Email and press <b>Submit</b>.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div v-if="activeTab == 'batchRequest'">
                             This action has not been implemented yet.
                         </div>
@@ -510,7 +552,14 @@ include('include.php');
                         },
                         QBClass: {
                             actions: {
-                                create: true,
+                                create: [
+                                    {
+                                        name: 'Name',
+                                        key: 'Name',
+                                        type: 'text',
+                                        required: true
+                                    }
+                                ],
                                 read: false,
                                 update: false,
                                 query: true
@@ -579,7 +628,8 @@ include('include.php');
                                 read: false,
                                 update: false,
                                 delete: true,
-                                query: true
+                                query: true,
+                                send: true
                             }
                         },
                         Item: {
@@ -800,6 +850,17 @@ include('include.php');
                     query: function() {
                         this.loading = true;
                         this.$http.post('query.php', {max_results: this.data.max_results, entity: this.entity}, {emulateJSON: true})
+                            .then(function(response) {
+                                this.response = JSON.stringify(response.json(), null, 2);
+                                this.loading = false;
+                            }, function() {
+                                this.response = 'Failed to fetch data.';
+                                this.loading = false;
+                            });
+                    },
+                    send: function() {
+                        this.loading = true;
+                        this.$http.post('send.php', {id: this.data.id, email: this.data.email, entity: this.entity}, {emulateJSON: true})
                             .then(function(response) {
                                 this.response = JSON.stringify(response.json(), null, 2);
                                 this.loading = false;
