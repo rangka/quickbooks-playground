@@ -285,6 +285,56 @@ include('include.php');
                                 </div>
                             </div>
                         </div>
+                        <div v-if="activeTab == 'attach'">
+                            <div v-if="!getEntityAction()">
+                                This action has not been implemented yet.
+                            </div>
+                            <div v-else>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <form action="">
+                                            <div class="form-group">
+                                                <label for="id">ID</label>
+                                                <input type="text" class="form-control" v-model="data.id">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="id">File 1</label>
+                                                <input type="file" class="form-control" v-el:file1>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="id">File 2</label>
+                                                <input type="file" class="form-control" v-el:file2>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="id">File 3</label>
+                                                <input type="file" class="form-control" v-el:file3>
+                                            </div>
+                                            <div class="form-group">
+                                                <button type="button" class="btn btn-info" @click="attach()">Submit</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="panel result-panel">
+                                            <div class="panel-heading">
+                                                <h3 class="panel-title">Response <span class="pull-right"><a href="javascript:void(0);">API Docs</a> | <a href="javascript:void(0);">QB Docs</a></span></h3>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div v-if="loading">
+                                                    Fetching data, please wait..
+                                                </div>
+                                                <div v-else>
+                                                    <div v-if="response" class="response">{{ response }}</div>
+                                                    <div v-else>
+                                                        Pick a file press <b>Submit</b>.
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div v-if="activeTab == 'batchRequest'">
                             This action has not been implemented yet.
                         </div>
@@ -434,7 +484,7 @@ include('include.php');
                         },
                         Attachable: {
                             actions: {
-                                create: true,
+                                create: false,
                                 read: false,
                                 update: false,
                                 delete: true,
@@ -528,12 +578,13 @@ include('include.php');
                                 read: true,
                                 update: false,
                                 delete: true,
-                                query: true
+                                query: true,
+                                attach: true
                             }
                         },
                         BillPayment: {
                             actions: {
-                                create: true,
+                                create: false,
                                 read: false,
                                 update: false,
                                 delete: true,
@@ -573,19 +624,21 @@ include('include.php');
                         },
                         CreditMemo: {
                             actions: {
-                                create: true,
+                                create: false,
                                 read: false,
                                 update: false,
                                 delete: true,
-                                query: true
+                                query: true,
+                                attach: true
                             }
                         },
                         Customer: {
                             actions: {
-                                create: true,
+                                create: false,
                                 read: true,
                                 update: true,
-                                query: true
+                                query: true,
+                                attach: true
                             }
                         },
                         Department: {
@@ -602,7 +655,8 @@ include('include.php');
                                 read: false,
                                 update: false,
                                 delete: true,
-                                query: true
+                                query: true,
+                                attach: true
                             }
                         },
                         Employee: {
@@ -619,7 +673,8 @@ include('include.php');
                                 read: false,
                                 update: false,
                                 delete: true,
-                                query: true
+                                query: true,
+                                attach: true
                             }
                         },
                         Invoice: {
@@ -629,7 +684,8 @@ include('include.php');
                                 update: false,
                                 delete: true,
                                 query: true,
-                                send: true
+                                send: true,
+                                attach: true
                             }
                         },
                         Item: {
@@ -646,7 +702,8 @@ include('include.php');
                                 read: false,
                                 update: false,
                                 delete: true,
-                                query: true
+                                query: true,
+                                attach: true
                             }
                         },
                         Payment: {
@@ -655,7 +712,8 @@ include('include.php');
                                 read: false,
                                 update: false,
                                 delete: true,
-                                query: true
+                                query: true,
+                                attach: true
                             }
                         },
                         PaymentMethod: {
@@ -701,7 +759,8 @@ include('include.php');
                                 read: false,
                                 update: false,
                                 delete: true,
-                                query: true
+                                query: true,
+                                attach: true
                             }
                         },
                         PurchaseOrder: {
@@ -710,7 +769,8 @@ include('include.php');
                                 read: false,
                                 update: false,
                                 delete: true,
-                                query: true
+                                query: true,
+                                attach: true
                             }
                         },
                         RefundReceipt: {
@@ -719,7 +779,8 @@ include('include.php');
                                 read: false,
                                 update: false,
                                 delete: true,
-                                query: true
+                                query: true,
+                                attach: true
                             }
                         },
                         Reports: {
@@ -733,7 +794,8 @@ include('include.php');
                                 read: false,
                                 update: false,
                                 delete: true,
-                                query: true
+                                query: true,
+                                attach: true
                             }
                         },
                         TaxAgency: {
@@ -783,7 +845,8 @@ include('include.php');
                                 read: false,
                                 update: false,
                                 delete: true,
-                                query: true
+                                query: true,
+                                attach: true
                             }
                         },
                         Vendor: {
@@ -791,7 +854,8 @@ include('include.php');
                                 create: false,
                                 read: false,
                                 update: false,
-                                query: true
+                                query: true,
+                                attach: true
                             }
                         },
                         VendorCredit: {
@@ -861,6 +925,25 @@ include('include.php');
                     send: function() {
                         this.loading = true;
                         this.$http.post('send.php', {id: this.data.id, email: this.data.email, entity: this.entity}, {emulateJSON: true})
+                            .then(function(response) {
+                                this.response = JSON.stringify(response.json(), null, 2);
+                                this.loading = false;
+                            }, function() {
+                                this.response = 'Failed to fetch data.';
+                                this.loading = false;
+                            });
+                    },
+                    attach: function() {
+                        this.loading = true;
+
+                        var data = new FormData();
+                        data.append('id', this.data.id);
+                        data.append('entity', this.entity);
+                        data.append('file[]', this.$els.file1.files[0])
+                        data.append('file[]', this.$els.file2.files[0])
+                        data.append('file[]', this.$els.file3.files[0])
+
+                        this.$http.post('attach.php', data, {emulateJSON: true})
                             .then(function(response) {
                                 this.response = JSON.stringify(response.json(), null, 2);
                                 this.loading = false;
