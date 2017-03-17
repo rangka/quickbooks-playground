@@ -18,7 +18,7 @@ try {
 
     $class    = '\Rangka\Quickbooks\Services\\' . ucfirst($entity);
     $service  = new $class;
-    $response = $service->attach($id, $files);
+    $response = $service->attach($id, $files, true);
 
     echo json_encode($response);
 }
