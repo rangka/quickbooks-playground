@@ -9,7 +9,10 @@ try {
     $class = '\Rangka\Quickbooks\Services\\' . ucfirst($entity);
 
     $service = new $class;
-    $response = $service->query()->paginate(1, $max_results)->get();
+    $response = $service
+                ->query()
+                ->paginate(1, $max_results)
+                ->get();
 
     echo json_encode($response);
 }
@@ -18,4 +21,7 @@ catch (\GuzzleHttp\Exception\ClientException $e) {
 }
 catch (\GuzzleHttp\Exception\ServerException $e) {
     echo (string) $e->getResponse()->getBody();
+}
+catch (\Exception $e) {
+    echo json_encode(['error' => $e->getMessage()]);
 }
