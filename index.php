@@ -819,7 +819,38 @@ include('include.php');
                         },
                         TaxService: {
                             actions: {
-                                create: false
+                                create: [
+                                    {
+                                        name: "TaxCode",
+                                        key: 'TaxCode',
+                                        type: 'text',
+                                        required: true
+                                    },
+                                    {
+                                        name: "TaxRateId",
+                                        key: 'TaxRateDetails.0.TaxRateId',
+                                        type: 'text',
+                                        required: true
+                                    },
+                                    {
+                                        name: "TaxRateName",
+                                        key: 'TaxRateDetails.0.TaxRateName',
+                                        type: 'text',
+                                        required: true
+                                    },
+                                    {
+                                        name: "RateValue",
+                                        key: 'TaxRateDetails.0.RateValue',
+                                        type: 'text',
+                                        required: true
+                                    },
+                                    {
+                                        name: "TaxAgencyId",
+                                        key: 'TaxRateDetails.0.TaxAgencyId',
+                                        type: 'text',
+                                        required: true
+                                    },
+                                ]
                             }
                         },
                         Term: {
