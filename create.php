@@ -11,13 +11,14 @@ try {
 
     $service = new $class;
     $builder = $service->getBuilder();
+    $all = [];
 
     foreach ($fields as $field=>$value) {
-        $method = 'set'.$field;
+        $method = $field;
         $exploded = explode('.', $field);
 
         if (count($exploded) > 1) {
-            $method   = 'set'.$exploded[0];
+            $method   = $exploded[0];
 
             unset($exploded[0]);
 
@@ -25,13 +26,20 @@ try {
             foreach ($reversed as $now) {
                 $value = [$now => $value];
             }
+
         }
 
-        if (substr($value, 0, 1) == '{') {
+        if (is_string($value) && substr($value, 0, 1) == '{') {
             $value = json_decode($value, true);
             $value = $value['Data'];
         }
 
+        $all[$method] = isset($all[$method]) ? array_replace_recursive($all[$method], $value) : $value;
+
+    }
+
+    foreach ($all as $field => $row) {
+        $method = 'set'.$field;
         if ($value === 'true') {
             $builder->{$method}(true);
         }
@@ -39,7 +47,7 @@ try {
             $builder->{$method}(false);
         }
         else {
-            $builder->{$method}($value);
+            $builder->{$method}($row);
         }
     }
 
