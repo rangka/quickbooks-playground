@@ -163,8 +163,54 @@ include('include.php');
                             <div v-if="!getEntityAction()">
                                 This action has not been implemented yet.
                             </div>
-                            <div v-else>
                                 
+                                <div class="col-md-6">
+                                    <div class="form-group" v-for="field in getEntityAction()">
+                                        <label for="">
+                                            {{ field.name }}
+                                            <span class="required" v-if="field.required">*</span>
+                                        </label>
+
+                                        <div v-if="field.type == 'text'">
+                                            <input type="text" class="form-control" value="{{ field.default }}" v-model="item[field.key]">
+                                        </div>
+
+                                        <div v-if="field.type == 'textarea'">
+                                            <textarea v-model="item[field.key]" class="form-control"></textarea>
+                                        </div>
+
+                                        <div v-if="field.type == 'select'">
+                                            <select name="" id="" class="form-control" v-model="item[field.key]">
+                                                <option value="{{ option.value }}" v-for="option in field.options">{{ option.name }}</option>
+                                            </select>
+                                        </div>
+
+                                        <div v-if="field.type == 'checkbox'">
+                                            <input type="checkbox" value="{{ field.value }}" v-model="item[field.key]"> {{ field.description }}
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="button" class="btn btn-info" @click="update()">Submit</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="panel result-panel">
+                                        <div class="panel-heading">
+                                            <h3 class="panel-title">Response <span class="pull-right"><a href="javascript:void(0);">API Docs</a> | <a href="javascript:void(0);">QB Docs</a></span></h3>
+                                        </div>
+                                        <div class="panel-body">
+                                            <div v-if="loading">
+                                                Fetching data, please wait..
+                                            </div>
+                                            <div v-else>
+                                                <div v-if="response" class="response">{{ response }}</div>
+                                                <div v-else>
+                                                    Fill up the form and press <b>Submit</b>. Fields marked with <span class="required">*</span> is required.
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div v-if="activeTab == 'delete'">
@@ -882,9 +928,83 @@ include('include.php');
                         },
                         Vendor: {
                             actions: {
-                                create: false,
+                                create: [
+                                    {
+                                        name: "Title",
+                                        key: 'Title',
+                                        type: 'text',
+                                        required: true
+                                    },
+                                    {
+                                        name: "Given Name",
+                                        key: 'GivenName',
+                                        type: 'text',
+                                        required: true
+                                    },
+                                    {
+                                        name: "Middle Name",
+                                        key: 'MiddleName',
+                                        type: 'text',
+                                        required: true
+                                    },
+                                    {
+                                        name: "Family Name",
+                                        key: 'FamilyName',
+                                        type: 'text',
+                                        required: true
+                                    },
+                                    {
+                                        name: "Suffix",
+                                        key: 'Suffix',
+                                        type: 'text',
+                                        required: true
+                                    },
+                                ],
                                 read: false,
-                                update: false,
+                                update: [
+                                    {
+                                        name: "ID",
+                                        key: 'Id',
+                                        type: 'text',
+                                        required: true
+                                    },
+                                    {
+                                        name: "Sync Token",
+                                        key: 'SyncToken',
+                                        type: 'text',
+                                        required: true
+                                    },
+                                    {
+                                        name: "Title",
+                                        key: 'Title',
+                                        type: 'text',
+                                        required: true
+                                    },
+                                    {
+                                        name: "Given Name",
+                                        key: 'GivenName',
+                                        type: 'text',
+                                        required: true
+                                    },
+                                    {
+                                        name: "Middle Name",
+                                        key: 'MiddleName',
+                                        type: 'text',
+                                        required: true
+                                    },
+                                    {
+                                        name: "Family Name",
+                                        key: 'FamilyName',
+                                        type: 'text',
+                                        required: true
+                                    },
+                                    {
+                                        name: "Suffix",
+                                        key: 'Suffix',
+                                        type: 'text',
+                                        required: true
+                                    },
+                                ],
                                 query: true,
                                 attach: true
                             }
@@ -991,6 +1111,17 @@ include('include.php');
                                 this.loading = false;
                             }, function() {
                                 this.response = 'Failed to create data.';
+                                this.loading = false;
+                            });
+                    },
+                    update: function() {
+                        this.loading = true;
+                        this.$http.post('update.php', {fields: this.item, entity: this.entity}, {emulateJSON: true})
+                            .then(function(response) {
+                                this.response = JSON.stringify(response.json(), null, 2);
+                                this.loading = false;
+                            }, function() {
+                                this.response = 'Failed to update data.';
                                 this.loading = false;
                             });
                     }
